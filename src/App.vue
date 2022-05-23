@@ -1,28 +1,53 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <header>
+      <AppHeader
+        @searchClicked="saveSearchedMovie($event), searchMovie($event)"
+      />
+    </header>
   </div>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import AppHeader from "./components/AppHeader.vue";
+import axios from "axios";
 
 export default {
   name: "App",
   components: {
-    HelloWorld,
+    AppHeader,
+  },
+
+  data() {
+    return {
+      movies: [],
+      search: "",
+    };
+  },
+
+  methods: {
+    searchMovie() {
+      axios
+        .get("https://api.themoviedb.org/3/search/movie", {
+          params: {
+            api_key: "e5ec05af38ac70f77d47f4a9382f77df",
+            query: this.search,
+          },
+        })
+        .then((resp) => {
+          this.movies = resp.data;
+          console.log(this.movies);
+        });
+    },
+
+    saveSearchedMovie(searchedMovie) {
+      this.search = searchedMovie;
+      console.log(this.search);
+    },
   },
 };
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+@import "~@fortawesome/fontawesome-free/css/all.min.css";
 </style>
