@@ -5,17 +5,22 @@
         @searchClicked="saveSearchedMovie($event), searchMovie($event)"
       />
     </header>
+    <main>
+      <AppMovieCard v-for="item in this.movies" :key="item.id" :movie="item" />
+    </main>
   </div>
 </template>
 
 <script>
 import AppHeader from "./components/AppHeader.vue";
+import AppMovieCard from "./components/AppMovieCard.vue";
 import axios from "axios";
 
 export default {
   name: "App",
   components: {
     AppHeader,
+    AppMovieCard,
   },
 
   data() {
@@ -35,7 +40,7 @@ export default {
           },
         })
         .then((resp) => {
-          this.movies = resp.data;
+          this.movies = resp.data.results;
           console.log(this.movies);
         });
     },
