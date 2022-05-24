@@ -1,7 +1,10 @@
 <template>
   <div class="obj-card">
     <div class="cover">
-      <img :src="posterImgUrl" alt="poster-img" />
+      <img
+        :src="posterImgUrl"
+        :alt="objCard.title ? objCard.title : objCard.name"
+      />
 
       <!-- {{ objCard.poster_path }} -->
     </div>
@@ -39,12 +42,17 @@
       <h5>{{ convertedRate }}</h5>
 
       <div class="rating-container">
-        <i class="fas fa-star"></i>
+        <i
+          class="fas fa-star"
+          v-for="(item, index) in this.fullStars"
+          :key="index"
+          :fullStar="item"
+        ></i>
         <i
           class="far fa-star"
-          :v-for="item in this.stars"
+          v-for="(item, index) in this.emptyStars"
           :key="index"
-          :star="item"
+          :emptyStar="item"
         ></i>
       </div>
     </div>
@@ -61,7 +69,6 @@ export default {
   data() {
     return {
       flags: ["de", "en", "fr", "it", "ja", "jp"],
-      stars: [],
     };
   },
 
@@ -79,8 +86,26 @@ export default {
     convertedRate() {
       return Math.ceil(this.objCard.vote_average / 2);
     },
+
+    fullStars() {
+      const fullStarsArray = [];
+      for (let i = 0; i < this.convertedRate; i++) {
+        fullStarsArray.push(i);
+      }
+      return fullStarsArray;
+    },
+
+    emptyStars() {
+      const empties = 5 - this.convertedRate;
+      const emptyStarsArray = [];
+      for (let i = 0; i < empties; i++) {
+        emptyStarsArray.push(i);
+      }
+      return emptyStarsArray;
+    },
   },
 };
+// console.log(stars());
 </script>
 
 <style lang="scss" scoped>
