@@ -41,6 +41,7 @@ export default {
       movies: [],
       tvShows: [],
       search: "",
+      convertedVote: "",
     };
   },
 

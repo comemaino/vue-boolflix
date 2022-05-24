@@ -1,8 +1,13 @@
 <template>
   <div class="header">
     <div class="container">
-      <input type="text" placeholder="Cerca" v-model="searchedKeys" />
-      <button @click="$emit('searchClicked', searchedKeys)">Search</button>
+      <input
+        type="text"
+        placeholder="Cerca"
+        v-model="searchedKeys"
+        @keyup.enter="$emit('searchClicked', searchedKeys)"
+      />
+      <!-- <button @click="$emit('searchClicked', searchedKeys)">Search</button> -->
     </div>
   </div>
 </template>

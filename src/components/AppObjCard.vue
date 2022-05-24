@@ -1,16 +1,53 @@
 <template>
   <div class="obj-card">
-    <h3>{{ objCard.title ? objCard.title : objCard.name }}</h3>
-    <h4>
-      {{
-        objCard.original_title ? objCard.original_title : objCard.original_name
-      }}
-    </h4>
+    <div class="cover">
+      <img :src="posterImgUrl" alt="poster-img" />
 
-    <img v-if="imgUrl" :src="imgUrl" alt="lang" />
-    <h5 v-else>{{ objCard.original_language.toUpperCase() }}</h5>
+      <!-- {{ objCard.poster_path }} -->
+    </div>
+    <div class="hover">
+      <h3>{{ objCard.title ? objCard.title : objCard.name }}</h3>
+      <h4>
+        {{
+          objCard.original_title
+            ? objCard.original_title
+            : objCard.original_name
+        }}
+      </h4>
 
-    <h5>{{ objCard.vote_average }}</h5>
+      <!-- <img
+        v-if="flagImgUrl"
+        :src="
+          require('../assets/img/flags/' +
+            this.objCard.original_language +
+            '.png')
+        "
+        alt="lang"
+        class="flag"
+      />
+      <h5 v-else>{{ objCard.original_language.toUpperCase() }}</h5> -->
+
+      <img
+        class="flag"
+        v-if="this.flags.includes(objCard.original_language)"
+        :src="flagImgUrl"
+        alt="lang"
+      />
+
+      <h5 v-else>{{ objCard.original_language.toUpperCase() }}</h5>
+
+      <h5>{{ convertedRate }}</h5>
+
+      <div class="rating-container">
+        <i class="fas fa-star"></i>
+        <i
+          class="far fa-star"
+          :v-for="item in this.stars"
+          :key="index"
+          :star="item"
+        ></i>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -23,10 +60,25 @@ export default {
 
   data() {
     return {
-      imgUrl: require("../assets/img/flags/" +
-        this.objCard.original_language +
-        ".png"),
+      flags: ["de", "en", "fr", "it", "ja", "jp"],
+      stars: [],
     };
+  },
+
+  computed: {
+    flagImgUrl() {
+      return require("../assets/img/flags/" +
+        this.objCard.original_language +
+        ".png");
+    },
+
+    posterImgUrl() {
+      return "https://image.tmdb.org/t/p/w154" + this.objCard.poster_path;
+    },
+
+    convertedRate() {
+      return Math.ceil(this.objCard.vote_average / 2);
+    },
   },
 };
 </script>
@@ -38,7 +90,11 @@ export default {
   padding: 0.5rem;
   border: 1px solid black;
 
-  img {
+  .cover img {
+    width: 100%;
+  }
+
+  .flag {
     width: 15px;
   }
 }
