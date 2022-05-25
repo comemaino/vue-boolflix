@@ -1,22 +1,15 @@
 <template>
   <div class="obj-card">
     <div class="cover">
-      <img
-        :src="posterImgUrl"
-        :alt="objCard.title ? objCard.title : objCard.name"
-      />
+      <img :src="posterImgUrl" :alt="cardTitle" />
 
       <!-- {{ objCard.poster_path }} -->
     </div>
     <div class="hover">
-      <h3>{{ objCard.title ? objCard.title : objCard.name }}</h3>
-      <h4>
-        {{
-          objCard.original_title
-            ? objCard.original_title
-            : objCard.original_name
-        }}
-      </h4>
+      <h3>{{ cardTitle }}</h3>
+      <h5>
+        {{ cardOriginalTitle }}
+      </h5>
 
       <!-- <img
         v-if="flagImgUrl"
@@ -37,12 +30,19 @@
         alt="lang"
       />
 
-      <h5 v-else>{{ objCard.original_language.toUpperCase() }}</h5>
+      <h6 v-else>{{ objCard.original_language.toUpperCase() }}</h6>
 
-      <h5>{{ convertedRate }}</h5>
+      <!-- <h5>{{ convertedRate }}</h5> -->
 
       <div class="rating-container">
         <i
+          v-for="n in 5"
+          :key="n"
+          class="fa-star"
+          :class="n <= convertedRate ? 'fas' : 'far'"
+        ></i>
+
+        <!-- <i
           class="fas fa-star"
           v-for="(item, index) in this.fullStars"
           :key="index"
@@ -53,7 +53,7 @@
           v-for="(item, index) in this.emptyStars"
           :key="index"
           :emptyStar="item"
-        ></i>
+        ></i> -->
       </div>
     </div>
   </div>
@@ -68,11 +68,19 @@ export default {
 
   data() {
     return {
-      flags: ["de", "en", "fr", "it", "ja", "jp"],
+      flags: ["de", "en", "fr", "it", "ja"],
     };
   },
 
   computed: {
+    cardTitle() {
+      return this.objCard.title || this.objCard.name;
+    },
+
+    cardOriginalTitle() {
+      return this.objCard.original_title || this.objCard.original_name;
+    },
+
     flagImgUrl() {
       return require("../assets/img/flags/" +
         this.objCard.original_language +
@@ -87,22 +95,22 @@ export default {
       return Math.ceil(this.objCard.vote_average / 2);
     },
 
-    fullStars() {
-      const fullStarsArray = [];
-      for (let i = 0; i < this.convertedRate; i++) {
-        fullStarsArray.push(i);
-      }
-      return fullStarsArray;
-    },
+    // fullStars() {
+    //   const fullStarsArray = [];
+    //   for (let i = 0; i < this.convertedRate; i++) {
+    //     fullStarsArray.push(i);
+    //   }
+    //   return fullStarsArray;
+    // },
 
-    emptyStars() {
-      const empties = 5 - this.convertedRate;
-      const emptyStarsArray = [];
-      for (let i = 0; i < empties; i++) {
-        emptyStarsArray.push(i);
-      }
-      return emptyStarsArray;
-    },
+    // emptyStars() {
+    //   const empties = 5 - this.convertedRate;
+    //   const emptyStarsArray = [];
+    //   for (let i = 0; i < empties; i++) {
+    //     emptyStarsArray.push(i);
+    //   }
+    //   return emptyStarsArray;
+    // },
   },
 };
 // console.log(stars());

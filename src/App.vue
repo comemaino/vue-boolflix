@@ -2,9 +2,7 @@
   <div id="app">
     <header>
       <AppHeader
-        @searchClicked="
-          saveSearchedMovie($event), searchMovie($event), searchTvShows($event)
-        "
+        @searchClicked="saveSearchedMovie($event), searchMovie($event)"
       />
     </header>
     <main>
@@ -47,31 +45,43 @@ export default {
 
   methods: {
     searchMovie() {
-      axios
-        .get("https://api.themoviedb.org/3/search/movie", {
-          params: {
-            api_key: "e5ec05af38ac70f77d47f4a9382f77df",
-            query: this.search,
-          },
-        })
-        .then((resp) => {
-          this.movies = resp.data.results;
-          console.log(this.movies);
-        });
-    },
+      const options = {
+        params: {
+          api_key: "e5ec05af38ac70f77d47f4a9382f77df",
+          query: this.search,
+        },
+      };
+      //SINTASSI CHIAMATE MULTIPLE
+      const reqMovies = axios.get(
+        "https://api.themoviedb.org/3/search/movie",
+        options
+      );
+      const reqTvs = axios.get(
+        "https://api.themoviedb.org/3/search/tv",
+        options
+      );
 
-    searchTvShows() {
-      axios
-        .get("https://api.themoviedb.org/3/search/tv", {
-          params: {
-            api_key: "e5ec05af38ac70f77d47f4a9382f77df",
-            query: this.search,
-          },
-        })
-        .then((resp) => {
-          this.tvShows = resp.data.results;
-          console.log(this.tvShows);
-        });
+      axios.all([reqMovies, reqTvs]).then((resp) => {
+        this.movies = resp[0].data.results;
+        console.log(this.movies);
+        this.tvShows = resp[1].data.results;
+        console.log(this.tvShows);
+      });
+
+      // SINTASSI CHAIMATE SEPARATE
+      //   axios
+      //     .get("https://api.themoviedb.org/3/search/movie", options)
+      //     .then((resp) => {
+      //       this.movies = resp.data.results;
+      //       console.log(this.movies);
+      //     });
+
+      //   axios
+      //     .get("https://api.themoviedb.org/3/search/tv", options)
+      //     .then((resp) => {
+      //       this.tvShows = resp.data.results;
+      //       console.log(this.tvShows);
+      //     });
     },
 
     saveSearchedMovie(searchedMovie) {
