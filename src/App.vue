@@ -7,14 +7,15 @@
     </header>
     <main>
       <section class="movies">
-        <h2>Movies</h2>
         <div class="container">
+          <h2 v-if="this.movies.length != 0">Movies</h2>
+
           <AppObjCard v-for="item in movies" :key="item.id" :objCard="item" />
         </div>
       </section>
       <section class="series">
-        <h2>TV Shows</h2>
         <div class="container">
+          <h2 v-if="this.tvShows.length != 0">TV Shows</h2>
           <AppObjCard v-for="item in tvShows" :key="item.id" :objCard="item" />
         </div>
       </section>
@@ -95,4 +96,21 @@ export default {
 <style lang="scss">
 @import "~@fortawesome/fontawesome-free/css/all.min.css";
 @import "./style/common.scss";
+
+#app {
+  height: 100vh;
+  background-color: #333;
+
+  main {
+    background-color: inherit;
+
+    section {
+      h2 {
+        margin-bottom: 1rem;
+        width: 100%;
+        color: #ccc;
+      }
+    }
+  }
+}
 </style>

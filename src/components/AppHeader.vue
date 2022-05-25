@@ -1,6 +1,7 @@
 <template>
   <div class="header">
     <div class="container">
+      <h1>BOOLFLIX</h1>
       <input
         type="text"
         placeholder="Cerca"
@@ -27,7 +28,14 @@ export default {
 @import "../style/common.scss";
 
 .header {
-  background-color: #555;
+  margin-bottom: 1rem;
   padding: 1rem 0;
+  background-color: #111;
+  h1 {
+    color: #c00;
+  }
+  input {
+    margin: 0.5rem;
+  }
 }
 </style>
