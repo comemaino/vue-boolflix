@@ -10,7 +10,6 @@
         <img src="../assets/img/not-found.jpg" alt="" />
         <span>{{ cardTitle }}</span>
       </div>
-      <!-- {{ objCard.poster_path }} -->
     </div>
     <div class="details">
       <h4>
@@ -20,18 +19,6 @@
         Titolo Originale: <span>{{ cardOriginalTitle }}</span>
       </h5>
 
-      <!-- <img
-        v-if="flagImgUrl"
-        :src="
-          require('../assets/img/flags/' +
-            this.objCard.original_language +
-            '.png')
-        "
-        alt="lang"
-        class="flag"
-      />
-      <h5 v-else>{{ objCard.original_language.toUpperCase() }}</h5> -->
-
       <img
         class="flag"
         v-if="this.flags.includes(objCard.original_language)"
@@ -40,8 +27,6 @@
       />
 
       <h6 v-else>{{ objCard.original_language.toUpperCase() }}</h6>
-
-      <!-- <h5>{{ convertedRate }}</h5> -->
 
       <div class="rating-container">
         <h5>
@@ -53,24 +38,19 @@
             :class="n <= convertedRate ? 'fas' : 'far'"
           ></i>
         </h5>
-        <!-- STARS WITH 2 DIFFERENT ARRAYS -->
-        <!-- <i
-          class="fas fa-star"
-          v-for="(item, index) in this.fullStars"
-          :key="index"
-          :fullStar="item"
-        ></i>
-        <i
-          class="far fa-star"
-          v-for="(item, index) in this.emptyStars"
-          :key="index"
-          :emptyStar="item"
-        ></i> -->
       </div>
 
       <div class="overview">
+        <h5 v-if="objCard.overview">
+          Overview: <span> {{ objCard.overview }}</span>
+        </h5>
+      </div>
+      <div class="cast">
         <h5>
-          Overview <span> {{ objCard.overview }}</span>
+          Cast:
+          <span v-for="(item, index) in this.objCard.cast" :key="index"
+            >{{ objCard.cast[index].name }},
+          </span>
         </h5>
       </div>
     </div>
@@ -112,26 +92,8 @@ export default {
     convertedRate() {
       return Math.ceil(this.objCard.vote_average / 2);
     },
-    // STARS WITH TWO DIFFERENT ARRAYS
-    // fullStars() {
-    //   const fullStarsArray = [];
-    //   for (let i = 0; i < this.convertedRate; i++) {
-    //     fullStarsArray.push(i);
-    //   }
-    //   return fullStarsArray;
-    // },
-
-    // emptyStars() {
-    //   const empties = 5 - this.convertedRate;
-    //   const emptyStarsArray = [];
-    //   for (let i = 0; i < empties; i++) {
-    //     emptyStarsArray.push(i);
-    //   }
-    //   return emptyStarsArray;
-    // },
   },
 };
-// console.log(stars());
 </script>
 
 <style lang="scss" scoped>
@@ -171,7 +133,7 @@ export default {
     background-color: #111;
 
     * {
-      margin-bottom: 0.2rem;
+      margin-bottom: 0.3rem;
       color: #ccc;
     }
   }
@@ -195,6 +157,20 @@ export default {
 
       i {
         color: #fc0;
+      }
+
+      .overview {
+        max-height: 6rem;
+        overflow-y: auto;
+
+        &::-webkit-scrollbar {
+          width: 2px;
+          height: 100px;
+          background-color: #222;
+        }
+        &::-webkit-scrollbar-thumb {
+          background-color: #444;
+        }
       }
     }
   }

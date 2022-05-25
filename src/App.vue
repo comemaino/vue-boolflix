@@ -39,8 +39,8 @@ export default {
     return {
       movies: [],
       tvShows: [],
+      movieCast: [],
       search: "",
-      convertedVote: "",
     };
   },
 
@@ -67,29 +67,63 @@ export default {
         console.log(this.movies);
         this.tvShows = resp[1].data.results;
         console.log(this.tvShows);
+
+        this.movies.forEach((element) => {
+          axios
+            .get(`https://api.themoviedb.org/3/movie/${element.id}/credits`, {
+              params: {
+                api_key: "e5ec05af38ac70f77d47f4a9382f77df",
+              },
+            })
+            .then((resp) => {
+              // console.log(resp);
+              this.movieCast = resp.data.cast;
+              console.log(this.movieCast);
+              this.movies.forEach((element) => (element.cast = this.movieCast));
+            });
+        });
       });
-
-      // SINTASSI CHAIMATE SEPARATE
-      //   axios
-      //     .get("https://api.themoviedb.org/3/search/movie", options)
-      //     .then((resp) => {
-      //       this.movies = resp.data.results;
-      //       console.log(this.movies);
-      //     });
-
-      //   axios
-      //     .get("https://api.themoviedb.org/3/search/tv", options)
-      //     .then((resp) => {
-      //       this.tvShows = resp.data.results;
-      //       console.log(this.tvShows);
-      //     });
     },
+
+    // getCast() {
+    //   this.movies.forEach((element) => {
+    //     console.log(element);
+    //   });
+    //   axios
+    //     .get(`https://api.themoviedb.org/3/movie/876716/credits`, {
+    //       params: {
+    //         api_key: "e5ec05af38ac70f77d47f4a9382f77df",
+    //       },
+    //     })
+    //     .then((resp) => {
+    //       console.log(resp);
+    //     });
+    // },
+
+    // SINTASSI CHAIMATE SEPARATE
+    //   axios
+    //     .get("https://api.themoviedb.org/3/search/movie", options)
+    //     .then((resp) => {
+    //       this.movies = resp.data.results;
+    //       console.log(this.movies);
+    //     });
+
+    //   axios
+    //     .get("https://api.themoviedb.org/3/search/tv", options)
+    //     .then((resp) => {
+    //       this.tvShows = resp.data.results;
+    //       console.log(this.tvShows);
+    //     });
 
     saveSearchedMovie(searchedMovie) {
       this.search = searchedMovie;
       console.log(this.search);
     },
   },
+
+  // computed: {
+  //   castMembers,
+  // },
 };
 </script>
 
