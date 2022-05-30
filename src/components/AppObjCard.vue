@@ -40,16 +40,17 @@
         </h5>
       </div>
 
-      <div class="overview">
-        <h5 v-if="objCard.overview">
+      <div class="overview" v-if="objCard.overview">
+        <h5>
           Overview: <span> {{ objCard.overview }}</span>
         </h5>
       </div>
-      <div class="cast">
+      <div class="cast" v-if="objCard.cast.length != 0">
         <h5>
           Cast:
-          <span v-for="(item, index) in this.objCard.cast" :key="index"
-            >{{ objCard.cast[index].name }},
+          <span v-for="(item, index) in objCard.cast" :key="index">
+            {{ item.name
+            }}<span v-if="index != objCard.cast.length - 1">,</span>
           </span>
         </h5>
       </div>
@@ -133,7 +134,7 @@ export default {
     background-color: #111;
 
     * {
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.5rem;
       color: #ccc;
     }
   }
